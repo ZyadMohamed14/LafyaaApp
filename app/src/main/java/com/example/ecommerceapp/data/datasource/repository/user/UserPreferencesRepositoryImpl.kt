@@ -8,7 +8,7 @@ import com.example.ecommerceapp.data.datasource.local.appDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreferenceRepositoryImpl(val context: Context) : UserPreferenceRepository {
+class UserPreferencesRepositoryImpl(val context: Context) : UserPreferencesRepository {
     override suspend fun isUserLoggedIn(): Flow<Boolean> =
         context.appDataStore.data.map { preferences ->
             // Return the logged-in state, defaulting to false if not found
