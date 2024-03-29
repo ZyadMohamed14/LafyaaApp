@@ -1,6 +1,7 @@
 package com.example.ecommerceapp
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.example.ecommerceapp.ui.AuthActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         initSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        startActivity(Intent(this@MainActivity,AuthActivity::class.java))
     }
     private fun initSplashScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -48,4 +50,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+/*
 
+ */
