@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AuthActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
+        startActivity(intent)
     }
 
     private fun initSplashScreen() {
@@ -68,4 +69,36 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+/*
+  <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_bold"
+                android:letterSpacing="0.05"
+                android:lineSpacingExtra="8sp"
+                android:text="@string/welcome_to_lafyuu"
+                android:textAlignment="center"
+                style="@style/TitleTextStyle"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins"
+                android:letterSpacing="0.3"
+                android:lineSpacingExtra="10sp"
+                android:text="Signin to continue"
+                android:textAlignment="center"
+                android:textColor="#9098B1"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="@+id/textView4"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+ */
