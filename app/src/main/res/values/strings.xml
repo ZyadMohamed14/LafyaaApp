@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">ecommerceapp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_lafyuu">Welcome to Lafyuu</string>
+    <string name="signin_to_continue">Signin to continue</string>
+    <string name="password_et_hint">Password</string>
+    <string name="email">ُEmail</string>
+    <string name="sign_in">Sign in</string>
+    <string name="or">or</string>
+    <string name="login_with_google">Login With Google</string>
+    <string name="login_with_facebook">Login With FaceBook</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="don_t_have_a_account">Don’t have a account?</string>
+    <string name="register">Register</string>
 </resources>
