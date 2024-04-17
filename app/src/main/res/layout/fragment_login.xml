@@ -90,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_email"
                     android:hint="@string/email"
+                    android:text="@={viewModel.emailState}"
                     android:inputType="textPersonName">
 
 
@@ -122,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/password"
                     android:hint="@string/password_et_hint"
+                    android:text="@={viewModel.passwordState}"
                     android:inputType="textPersonName">
 
                 </com.google.android.material.textfield.TextInputEditText>
@@ -132,6 +134,7 @@
                 android:id="@+id/signIn_btn"
                 android:textAllCaps="false"
                 style="@style/CustomMaterialButtonStyle"
+                android:onClickListener="@{() -> viewModel.login()}"
                 app:layout_constraintBottom_toTopOf="@+id/or_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

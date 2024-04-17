@@ -11,6 +11,8 @@
     <string name="login_with_facebook">تسجيل الدخول الفيس بوك</string>
     <string name="forgot_password">هل نسيت كلمة المرور؟</string>
     <string name="don_t_have_a_account">ليس لديك حساب؟</string>
-    <string name="register">سجل</string>
+    <string name="register">سجل الأن</string>
     <string name="login_with_google">تسجيل الدخول جوجل</string>
+    <string name="loading">تحميل ...</string>
+    <string name="generic_err_msg">"حدث خطاء من فضلك حاول مجددا "</string>
 </resources>
