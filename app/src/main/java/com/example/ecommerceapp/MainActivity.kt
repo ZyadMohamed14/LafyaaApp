@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.example.ecommerceapp.data.datasource.repository.user.UserPreferencesRepositoryImpl
+import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepositoryImpl
 import com.example.ecommerceapp.ui.AuthActivity
 import com.example.ecommerceapp.ui.user.UserViewModel
 import com.example.ecommerceapp.ui.user.UserViewModelFactory

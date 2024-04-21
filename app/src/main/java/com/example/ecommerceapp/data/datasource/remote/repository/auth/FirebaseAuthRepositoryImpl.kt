@@ -1,6 +1,7 @@
-package com.example.ecommerceapp.data.datasource.repository.auth
+package com.example.ecommerceapp.data.datasource.remote.repository.auth
 
 import com.example.ecommerceapp.model.Resource
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +10,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 
-class FirebaseAuthRepositoryImpl(private val auth: FirebaseAuth = FirebaseAuth.getInstance()) : FirebaseAuthRepository {
+class FirebaseAuthRepositoryImpl(private val auth: FirebaseAuth = FirebaseAuth.getInstance()) :
+    FirebaseAuthRepository {
     override suspend fun loginWithEmailAndPassword(
         email: String, password: String
     ): Flow<Resource<String>> = flow {
@@ -45,8 +47,19 @@ class FirebaseAuthRepositoryImpl(private val auth: FirebaseAuth = FirebaseAuth.g
 
 
 
-    override suspend fun loginWithFacebook(token: String): Flow<Resource<String>> {
-        TODO("Not yet implemented")
+    override suspend fun loginWithFacebook(token: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        try {
+            val credential = FacebookAuthProvider.getCredential(token)
+            val authResult = auth.signInWithCredential(credential).await()
+            authResult.user?.let {
+                emit(Resource.Success(it.uid))
+            } ?: run {
+                emit(Resource.Error(Exception("User not found")))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e))
+        }
     }
 
     override fun logout() {
