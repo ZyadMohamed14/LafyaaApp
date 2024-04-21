@@ -28,6 +28,23 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            buildConfigField(
+                "String","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
+
+            )
+            //
+        }
+
+        /* forEach {
+            it.buildConfigField(
+                "String","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
+            )
+        }
+        
+         */
+
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,6 +56,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig  =true
     }
 }
 
@@ -60,8 +78,10 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
+
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.facebook.android:facebook-login:16.0.0")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
     // navigation components
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
