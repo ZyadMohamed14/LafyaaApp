@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">ecommerceapp</string>
 
-    <string name="facebook_app_id" translatable="false">455875720438484</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb455875720438484</string>
-    <string name="facebook_client_token" translatable="false">4555735fef5d5b1640fa730f20e4090e</string>
-    <string name="facebook_app_secret" translatable="false">045798efdd9bd780c5c1254b9a697329</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

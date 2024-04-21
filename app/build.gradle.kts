@@ -33,16 +33,31 @@ android {
                 "String","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
 
             )
-            //
+
         }
 
-        /* forEach {
+         forEach {
             it.buildConfigField(
                 "String","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
             )
+             it.resValue(
+                 "string",
+                 "facebook_app_id",
+                 "\"455875720438484\""
+             )
+             it.resValue(
+                 "string",
+                 "fb_login_protocol_scheme",
+                 "\"fb455875720438484\""
+             )
+             it.resValue(
+                 "string",
+                 "facebook_client_token",
+                 "\"4555735fef5d5b1640fa730f20e4090e\""
+             )
         }
         
-         */
+
 
 
     }
