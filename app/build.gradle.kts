@@ -30,7 +30,7 @@ android {
         }
         debug {
             buildConfigField(
-                "String","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
+                "string","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
 
             )
 
@@ -38,7 +38,7 @@ android {
 
          forEach {
             it.buildConfigField(
-                "String","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
+                "string","clientServerId","\"896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com\""
             )
              it.resValue(
                  "string",
