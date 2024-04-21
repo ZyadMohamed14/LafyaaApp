@@ -3,18 +3,15 @@ package com.example.ecommerceapp.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ecommerceapp.BuildConfig
-
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.datasource.remote.repository.auth.FirebaseAuthRepositoryImpl
 import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepositoryImpl
@@ -37,7 +34,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
 
 
@@ -51,10 +47,12 @@ class LoginFragment : Fragment() {
         )
     }
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
+    private  val callbackManager :CallbackManager by lazy { CallbackManager.Factory.create() }
+    private val loginManager: LoginManager by lazy {LoginManager.getInstance()}
+
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var callbackManager: CallbackManager
-    private lateinit var loginManager: LoginManager
+    private val  auth: FirebaseAuth by lazy {FirebaseAuth.getInstance()}
+
 
 
     override fun onCreateView(
@@ -69,11 +67,9 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        auth = FirebaseAuth.getInstance()
+
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = loginViewModel
-        callbackManager = CallbackManager.Factory.create()
-        loginManager = LoginManager.getInstance()
         initViewModel()
         initListeners()
 
