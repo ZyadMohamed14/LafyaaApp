@@ -3,8 +3,8 @@ package com.example.ecommerceapp.ui.login
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ecommerceapp.data.datasource.repository.auth.FirebaseAuthRepository
-import com.example.ecommerceapp.data.datasource.repository.user.UserPreferencesRepository
+import com.example.ecommerceapp.data.datasource.remote.repository.auth.FirebaseAuthRepository
+import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepository
 import com.example.ecommerceapp.model.Resource
 import com.example.ecommerceapp.utils.isVaildEamil
 import kotlinx.coroutines.flow.Flow
@@ -71,28 +71,22 @@ class LoginViewModel(
         }.launchIn(viewModelScope)
     }
 
-
-
-        }
-
-
-/*
- fun loginWithGoogle(idToken:String){
-        viewModelScope.launch {
-            authRepository.loginWithGoogle(idToken).onEach {resource ->
-                when(resource){
-                    is Resource.Loading ->{ loginState.update { Resource.Loading() }}
-                    is Resource.Success ->{
-                        loginState.update { Resource.Success(resource.data?:"Empty UserId") }
-                    }
-                    is Resource.Error -> {
-                        loginState.value = Resource.Error(resource.exception?:Exception("UnknownExcp"))
-                    }
+    fun loginWithFacebook(token: String) = viewModelScope.launch {
+        authRepository.loginWithFacebook(token).onEach { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    _loginState.emit(Resource.Success(resource.data ?: "Empty User Id"))
                 }
+
+                else -> _loginState.emit(resource)
             }
-        }
-        }
- */
+        }.launchIn(viewModelScope)
+    }
+
+
+
+
+}
 
 
 
