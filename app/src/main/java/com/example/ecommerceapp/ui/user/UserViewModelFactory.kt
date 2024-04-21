@@ -3,7 +3,7 @@ package com.example.ecommerceapp.ui.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.ecommerceapp.data.datasource.repository.user.UserPreferencesRepository
+import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepository
 
 class UserViewModelFactory(private val userPreferencesRepository: UserPreferencesRepository) :
     ViewModelProvider.Factory {

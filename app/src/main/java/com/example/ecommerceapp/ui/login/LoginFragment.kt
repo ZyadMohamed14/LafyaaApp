@@ -16,14 +16,20 @@ import androidx.lifecycle.lifecycleScope
 import com.example.ecommerceapp.BuildConfig
 
 import com.example.ecommerceapp.R
-import com.example.ecommerceapp.data.datasource.repository.auth.FirebaseAuthRepositoryImpl
-import com.example.ecommerceapp.data.datasource.repository.user.UserPreferencesRepositoryImpl
+import com.example.ecommerceapp.data.datasource.remote.repository.auth.FirebaseAuthRepositoryImpl
+import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepositoryImpl
 import com.example.ecommerceapp.databinding.FragmentLoginBinding
 import com.example.ecommerceapp.model.Resource
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
 import com.example.ecommerceapp.utils.ProgressDialog
 import com.example.ecommerceapp.utils.showSnakeBarError
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -47,6 +53,8 @@ class LoginFragment : Fragment() {
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
     private lateinit var binding: FragmentLoginBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var callbackManager: CallbackManager
+    private lateinit var loginManager: LoginManager
 
 
     override fun onCreateView(
@@ -64,6 +72,8 @@ class LoginFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = loginViewModel
+        callbackManager = CallbackManager.Factory.create()
+        loginManager = LoginManager.getInstance()
         initViewModel()
         initListeners()
 
@@ -109,6 +119,14 @@ class LoginFragment : Fragment() {
         binding.googleSigninBtn.setOnClickListener {
             loginWithGoogleRequest()
         }
+        binding.facebookSigninBtn.setOnClickListener {
+            if (isLoggedIn()) {
+                signOut()
+            } else {
+                loginWithFacebook()
+            }
+
+        }
 
     }
 
@@ -146,5 +164,48 @@ class LoginFragment : Fragment() {
         )
     }
 
+    private fun isLoggedIn(): Boolean {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        return accessToken != null && !accessToken.isExpired
+    }
 
+    private fun loginWithFacebook() {
+        loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                val token = result.accessToken.token
+
+                firebaseAuthWithFacebook(token)
+            }
+
+            override fun onCancel() {
+                // Handle login cancel
+            }
+
+            override fun onError(error: FacebookException) {
+                // Handle login error
+                val msg = error.message ?: getString(R.string.generic_err_msg)
+
+                view?.showSnakeBarError(msg)
+                logAuthIssueToCrashlytics(msg, "Facebook")
+            }
+        })
+
+        loginManager.logInWithReadPermissions(
+            this,
+            listOf("email", "public_profile")
+        )
+    }
+
+    private fun firebaseAuthWithFacebook(token: String) {
+        loginViewModel.loginWithFacebook(token)
+    }
+    private fun signOut() {
+        loginManager.logOut()
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+    }
 }

@@ -15,4 +15,6 @@
     <string name="login_with_google">تسجيل الدخول جوجل</string>
     <string name="loading">تحميل ...</string>
     <string name="generic_err_msg">"حدث خطاء من فضلك حاول مجددا "</string>
+    <string name="ok">نعم</string>
+    <string name="retry">حاول مجددا</string>
 </resources>

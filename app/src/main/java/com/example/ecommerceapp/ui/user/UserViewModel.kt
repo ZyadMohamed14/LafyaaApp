@@ -2,7 +2,7 @@ package com.example.ecommerceapp.ui.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ecommerceapp.data.datasource.repository.user.UserPreferencesRepository
+import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepository
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 

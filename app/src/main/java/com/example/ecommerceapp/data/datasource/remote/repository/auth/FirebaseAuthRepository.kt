@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.data.datasource.repository.auth
+package com.example.ecommerceapp.data.datasource.remote.repository.auth
 
 import com.example.ecommerceapp.model.Resource
 import kotlinx.coroutines.flow.Flow
