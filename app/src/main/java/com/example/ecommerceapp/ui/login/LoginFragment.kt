@@ -13,10 +13,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ecommerceapp.BuildConfig
 import com.example.ecommerceapp.R
-import com.example.ecommerceapp.data.datasource.remote.repository.auth.FirebaseAuthRepositoryImpl
-import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepositoryImpl
+import com.example.ecommerceapp.data.model.Resource
+import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepositoryImpl
 import com.example.ecommerceapp.databinding.FragmentLoginBinding
-import com.example.ecommerceapp.model.Resource
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
 import com.example.ecommerceapp.utils.ProgressDialog
@@ -33,14 +33,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
 class LoginFragment : Fragment() {
     private val loginViewModel: LoginViewModel by viewModels {
         LoginViewModelFactory(
-            userPreferencesRepository = UserPreferencesRepositoryImpl(
+            userPreferencesRepository = UserPreferenceRepositoryImpl(
                 requireContext()
             ),
             authRepository = FirebaseAuthRepositoryImpl()
@@ -49,9 +48,8 @@ class LoginFragment : Fragment() {
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
     private  val callbackManager :CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy {LoginManager.getInstance()}
-
     private lateinit var binding: FragmentLoginBinding
-    private val  auth: FirebaseAuth by lazy {FirebaseAuth.getInstance()}
+
 
 
 

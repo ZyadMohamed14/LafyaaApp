@@ -3,9 +3,9 @@ package com.example.ecommerceapp.ui.login
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ecommerceapp.data.datasource.remote.repository.auth.FirebaseAuthRepository
-import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepository
-import com.example.ecommerceapp.model.Resource
+import com.example.ecommerceapp.data.model.Resource
+import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
+import com.example.ecommerceapp.data.reposotiry.user.UserPreferencesRepository
 import com.example.ecommerceapp.utils.isVaildEamil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
