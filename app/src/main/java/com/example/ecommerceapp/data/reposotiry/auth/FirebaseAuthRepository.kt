@@ -1,6 +1,6 @@
-package com.example.ecommerceapp.data.datasource.remote.repository.auth
+package com.example.ecommerceapp.data.reposotiry.auth
 
-import com.example.ecommerceapp.model.Resource
+import com.example.ecommerceapp.data.model.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface FirebaseAuthRepository {
