@@ -14,8 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.ecommerceapp.BuildConfig
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
-import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepositoryImpl
 import com.example.ecommerceapp.databinding.FragmentLoginBinding
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
@@ -38,12 +36,7 @@ import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
     private val loginViewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(
-            userPreferencesRepository = UserPreferenceRepositoryImpl(
-                requireContext()
-            ),
-            authRepository = FirebaseAuthRepositoryImpl()
-        )
+        LoginViewModelFactory(contextValue = requireContext())
     }
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
     private  val callbackManager :CallbackManager by lazy { CallbackManager.Factory.create() }
