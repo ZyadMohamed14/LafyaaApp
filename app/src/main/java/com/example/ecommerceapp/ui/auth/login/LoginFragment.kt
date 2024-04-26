@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.ui.login
+package com.example.ecommerceapp.ui.auth.login
 
 
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.ui.usermodel
+package com.example.ecommerceapp.ui.auth.usermodel
 
 import android.content.Context
 import android.util.Log

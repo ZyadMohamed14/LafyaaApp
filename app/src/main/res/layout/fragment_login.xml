@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.ecommerceapp.ui.login.LoginViewModel" />
+            type="com.example.ecommerceapp.ui.auth.login.LoginViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".ui.login.LoginFragment">
+            tools:context=".ui.auth.login.LoginFragment">
 
             <ImageView
                 android:id="@+id/imageView"
