@@ -15,7 +15,7 @@ import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepositoryImpl
-import com.example.ecommerceapp.data.reposotiry.user.UserPreferencesRepository
+import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
 import com.example.ecommerceapp.domain.toUserDetailsModel
 import com.example.ecommerceapp.domain.toUserDetailsPreferences
 import com.example.ecommerceapp.utils.CrashlyticsUtils
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(
     private val appPreferencesRepository: AppPreferenceRepository,
-    private val userPreferencesRepository: UserPreferencesRepository,
+    private val userPreferenceRepository: UserPreferenceRepository,
     private val userFirestoreRepository: UserFirestoreRepository,
     private val firebaseAuthRepository: FirebaseAuthRepository
 ) : ViewModel() {
@@ -55,12 +55,12 @@ class UserViewModel(
     // note that this flow block the main thread while you get the data every time you call it
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getUserDetails() =
-        userPreferencesRepository.getUserDetails().mapLatest { it.toUserDetailsModel() }
+        userPreferenceRepository.getUserDetails().mapLatest { it.toUserDetailsModel() }
 fun get(){
 
 }
     private fun listenToUserDetails() = viewModelScope.launch {
-        val userId = userPreferencesRepository.getUserId().first()
+        val userId = userPreferenceRepository.getUserId().first()
         if (userId.isEmpty()) return@launch
         userFirestoreRepository.getUserDetails(userId).catch { e ->
             val msg = e.message ?: "Error listening to user details"
@@ -74,7 +74,7 @@ fun get(){
                 is Resource.Success -> {
 
                     resource.data?.let {
-                        userPreferencesRepository.updateUserDetails(it.toUserDetailsPreferences())
+                        userPreferenceRepository.updateUserDetails(it.toUserDetailsPreferences())
                     }
                 }
 
@@ -90,7 +90,7 @@ fun get(){
     suspend fun logOut() = viewModelScope.launch {
         logoutState.emit(Resource.Loading())
         firebaseAuthRepository.logout()
-        userPreferencesRepository.clearUserPreferences()
+        userPreferenceRepository.clearUserPreferences()
         appPreferencesRepository.saveLoginState(false)
         logoutState.emit(Resource.Success(Unit))
     }

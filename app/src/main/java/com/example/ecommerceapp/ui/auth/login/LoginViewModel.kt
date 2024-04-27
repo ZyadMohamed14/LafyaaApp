@@ -6,9 +6,9 @@ import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.user.UserDetailsModel
 import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
-import com.example.ecommerceapp.data.reposotiry.user.UserPreferencesRepository
+import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
 import com.example.ecommerceapp.domain.toUserDetailsPreferences
-import com.example.ecommerceapp.utils.isVaildEamil
+import com.example.ecommerceapp.utils.isValidEmail
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val appPreferenceRepository: AppPreferenceRepository,
-    private val userPreferenceRepository: UserPreferencesRepository,
+    private val userPreferenceRepository: UserPreferenceRepository,
     private val authRepository: FirebaseAuthRepository,
 
     ) : ViewModel() {
@@ -32,7 +32,7 @@ class LoginViewModel(
     val emailState = MutableStateFlow("")
     val passwordState = MutableStateFlow("")
     val isLoginValid: Flow<Boolean> = combine(emailState, passwordState) { email, password ->
-        email.isVaildEamil() && password.length >= 6
+        email.isValidEmail() && password.length >= 6
     }
 
 
@@ -40,7 +40,7 @@ class LoginViewModel(
         val email = emailState.value
         val password = passwordState.value
         if (isLoginValid.first()) {
-         //   handleLoginFlow { authRepository.loginWithEmailAndPassword(email, password) }
+           handleLoginFlow { authRepository.loginWithEmailAndPassword(email, password) }
         } else {
             _loginState.emit(Resource.Error(Exception("Invalid email or password")))
         }

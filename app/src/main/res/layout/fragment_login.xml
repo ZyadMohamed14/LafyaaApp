@@ -134,7 +134,7 @@
                 android:id="@+id/signIn_btn"
                 android:textAllCaps="false"
                 style="@style/CustomMaterialButtonStyle"
-                android:onClickListener="@{() -> viewModel.login()}"
+                android:onClickListener="@{() -> viewModel.loginWithEmailAndPassword()}"
                 app:layout_constraintBottom_toTopOf="@+id/or_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

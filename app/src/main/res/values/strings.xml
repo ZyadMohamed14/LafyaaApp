@@ -23,9 +23,10 @@
     <string name="sign_up_msg">Sign Up</string>
     <string name="name_et_hint">FUll Name</string>
     <string name="email_et_hint">Email</string>
-    <string name="password_again_et_hint">Password Again</string>
+    <string name="password_again_et_hint">COnfirm Password</string>
     <string name="have_an_account_msg">have an account?</string>
     <string name="google_signup_btn_msg">Sign up with Google</string>
+    <string name="google_sign_in_field_msg">Google sign in failed, please retry again later.</string>
     <string name="facebook_signup_btn_msg">Sign up with facebook</string>
     <string name="forget_password_msg">Enter your email, to send an email to update your password.</string>
     <string name="send">Send</string>

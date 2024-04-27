@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.ecommerceapp.BuildConfig
+import com.example.ecommerceapp.MainActivity
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.databinding.FragmentLoginBinding
@@ -45,7 +47,6 @@ class LoginFragment : Fragment() {
 
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,7 +77,7 @@ class LoginFragment : Fragment() {
 
                     is Resource.Success -> {
                         progressDialog.dismiss()
-                        // goToHome()
+                         goToHome()
                     }
 
                     is Resource.Error -> {
@@ -90,6 +91,13 @@ class LoginFragment : Fragment() {
             }
         }
     }
+    private fun goToHome() {
+        requireActivity().startActivity(Intent(activity, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        requireActivity().finish()
+    }
+
 
     // ActivityResultLauncher for the sign-in intent
     private val launcher =
@@ -107,14 +115,15 @@ class LoginFragment : Fragment() {
             loginWithGoogleRequest()
         }
         binding.facebookSigninBtn.setOnClickListener {
-            if (isLoggedIn()) {
-                signOut()
-            } else {
-                loginWithFacebook()
-            }
-
+            loginWithFacebook()
         }
-
+        binding.registerTv.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+        binding.forgotPasswordTv.setOnClickListener {
+          //  val forgetPasswordFragment = ForgetPasswordFragment()
+          //  forgetPasswordFragment.show(parentFragmentManager, "forget-password")
+        }
     }
 
     private fun loginWithGoogleRequest() {
@@ -156,6 +165,7 @@ class LoginFragment : Fragment() {
         return accessToken != null && !accessToken.isExpired
     }
 
+
     private fun loginWithFacebook() {
         loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult) {
@@ -166,6 +176,7 @@ class LoginFragment : Fragment() {
 
             override fun onCancel() {
                 // Handle login cancel
+
             }
 
             override fun onError(error: FacebookException) {

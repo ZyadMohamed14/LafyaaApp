@@ -9,6 +9,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.schedulers.Schedulers
 
 class MyApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)

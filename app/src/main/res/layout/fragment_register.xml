@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewmodel"
+            type="com.example.ecommerceapp.ui.auth.register.RegisterViewModel" />
     </data>
 
     <ScrollView
@@ -49,6 +51,7 @@
                 android:drawableStart="@drawable/ic_name"
                 android:hint="@string/name_et_hint"
                 android:inputType="textEmailAddress"
+                android:text="@={viewmodel.name}"
                 />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -60,6 +63,7 @@
                 android:drawableStart="@drawable/ic_email"
                 android:hint="@string/email_et_hint"
                 android:inputType="textEmailAddress"
+                android:text="@={viewmodel.email}"
                  />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -71,6 +75,7 @@
                 android:drawableStart="@drawable/password"
                 android:hint="@string/password_et_hint"
                 android:inputType="textPassword"
+                android:text="@={viewmodel.password}"
                  />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -82,13 +87,14 @@
                 android:drawableStart="@drawable/password"
                 android:hint="@string/password_again_et_hint"
                 android:inputType="textPassword"
+                android:text="@={viewmodel.confirmPassword}"
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/login_btn"
                 style="@style/PrimaryButtonStyle"
                 android:layout_marginTop="16dp"
-
+                android:onClickListener="@{() -> viewmodel.registerWithEmailAndPassword()}"
                 android:text="@string/sign_up_msg" />
 
             <RelativeLayout
