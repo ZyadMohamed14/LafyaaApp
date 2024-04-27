@@ -11,31 +11,33 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.example.ecommerceapp.data.datasource.remote.repository.user.UserPreferencesRepositoryImpl
-import com.example.ecommerceapp.ui.AuthActivity
-import com.example.ecommerceapp.ui.user.UserViewModel
-import com.example.ecommerceapp.ui.user.UserViewModelFactory
-import kotlinx.coroutines.Dispatchers.Main
+import com.example.ecommerceapp.ui.auth.AuthActivity
+import com.example.ecommerceapp.ui.auth.usermodel.UserViewModel
+import com.example.ecommerceapp.ui.auth.usermodel.UserViewModelFactory
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(UserPreferencesRepositoryImpl(this@MainActivity))
+        UserViewModelFactory(context = this)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
         super.onCreate(savedInstanceState)
-        lifecycleScope.launch(Main) {
-            val isLoggedIn = userViewModel.isUserLoggedIn().first()
-            if (isLoggedIn) {
-                setContentView(R.layout.activity_main)
-            } else {
-                userViewModel.setIsLoggedIn(userLoginState = false)
-                goToAuthActivity()
-            }
+        val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
+        if (!isLoggedIn) {
+            goToAuthActivity()
+            return
         }
+
+        setContentView(R.layout.activity_main)
+        //this line for test wii be deleted in the future
+     //   findViewById<View>(R.id.textView).setOnClickListener { logOut() }
+
+        initViewModel()
     }
+
 
     private fun goToAuthActivity() {
         val intent = Intent(this, AuthActivity::class.java).apply {
@@ -67,38 +69,21 @@ class MainActivity : AppCompatActivity() {
             setTheme(R.style.Theme_Ecommerceapp)
         }
     }
+    private fun logOut() {
+        lifecycleScope.launch {
+            userViewModel.logOut()
+            goToAuthActivity()
+        }
+    }
+    private fun initViewModel() {
+        lifecycleScope.launch {
+            val userDetails = runBlocking { userViewModel.getUserDetails().first() }
+          //  Log.d(TAG, "initViewModel: user details ${userDetails.email}")
 
+            userViewModel.userDetailsState.collect {
+               // Log.d(TAG, "initViewModel: user details updated ${it?.email}")
+            }
+
+        }
+    }
 }
-/*
-  <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/poppins_bold"
-                android:letterSpacing="0.05"
-                android:lineSpacingExtra="8sp"
-                android:text="@string/welcome_to_lafyuu"
-                android:textAlignment="center"
-                style="@style/TitleTextStyle"
-                app:layout_constraintEnd_toEndOf="@+id/imageView"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="22dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins"
-                android:letterSpacing="0.3"
-                android:lineSpacingExtra="10sp"
-                android:text="Signin to continue"
-                android:textAlignment="center"
-                android:textColor="#9098B1"
-                android:textSize="12sp"
-                android:textStyle="normal"
-                app:layout_constraintEnd_toEndOf="@+id/textView4"
-                app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
- */

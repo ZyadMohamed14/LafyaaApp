@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.model
+package com.example.ecommerceapp.data.model
 
 sealed class Resource<T>(
     val data: T? = null, val exception: Exception? = null
