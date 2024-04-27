@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.ui
+package com.example.ecommerceapp.ui.auth
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
