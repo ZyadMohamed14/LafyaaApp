@@ -17,6 +17,7 @@ import com.example.ecommerceapp.MainActivity
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.databinding.FragmentLoginBinding
+import com.example.ecommerceapp.ui.auth.forgotpassword.ForgetPasswordFragment
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
 import com.example.ecommerceapp.utils.ProgressDialog
@@ -121,8 +122,8 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
         binding.forgotPasswordTv.setOnClickListener {
-          //  val forgetPasswordFragment = ForgetPasswordFragment()
-          //  forgetPasswordFragment.show(parentFragmentManager, "forget-password")
+           val forgetPasswordFragment = ForgetPasswordFragment()
+           forgetPasswordFragment.show(parentFragmentManager, "forget-password")
         }
     }
 
