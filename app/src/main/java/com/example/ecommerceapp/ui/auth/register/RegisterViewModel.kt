@@ -14,6 +14,7 @@ import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepositoryImpl
 import com.example.ecommerceapp.utils.isValidEmail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,12 +23,13 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-
-class RegisterViewModel(
+import javax.inject.Inject
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
     private val appPreferenceRepository: AppPreferenceRepository,
     private val userPreferenceRepository: UserPreferenceRepository,
     private val authRepository: FirebaseAuthRepository
-) :ViewModel(){
+) :ViewModel() {
     private val _registerState = MutableSharedFlow<Resource<UserDetailsModel>>()
     val registerState: SharedFlow<Resource<UserDetailsModel>> = _registerState.asSharedFlow()
     val name = MutableStateFlow("")
@@ -39,6 +41,7 @@ class RegisterViewModel(
     ) { name, email, password, confirmPassword ->
         email.isValidEmail() && password.length >= 6 && name.isNotEmpty() && confirmPassword.isNotEmpty() && password == confirmPassword
     }
+
     fun registerWithEmailAndPassword() = viewModelScope.launch(IO) {
         val name = name.value
         val email = email.value
@@ -53,37 +56,16 @@ class RegisterViewModel(
             _registerState.emit(Resource.Error(Exception("Please Check Your Entered Data")))
         }
     }
+
     fun signUpWithGoogle(idToken: String) = viewModelScope.launch {
         authRepository.registerWithGoogle(idToken).collect {
             _registerState.emit(it)
         }
     }
+
     fun registerWithFacebook(token: String) = viewModelScope.launch {
         authRepository.registerWithFacebook(token).collect {
             _registerState.emit(it)
-        }
-    }
-    // create viewmodel factory class
-    class RegisterViewModelFactory(
-        private val contextValue: Context
-    ) : ViewModelProvider.Factory {
-
-        private val appPreferenceRepository =
-            AppDataStoreRepositoryImpl(AppPreferencesDataSource(contextValue))
-        private val userPreferenceRepository = UserPreferenceRepositoryImpl(contextValue)
-
-        private val authRepository = FirebaseAuthRepositoryImpl()
-
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST") return RegisterViewModel(
-                    appPreferenceRepository,
-                    userPreferenceRepository,
-                    authRepository,
-                ) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }

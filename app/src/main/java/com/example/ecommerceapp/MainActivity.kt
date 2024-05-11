@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
@@ -13,18 +14,24 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.example.ecommerceapp.ui.auth.AuthActivity
 import com.example.ecommerceapp.ui.auth.usermodel.UserViewModel
-import com.example.ecommerceapp.ui.auth.usermodel.UserViewModelFactory
+import com.facebook.internal.Utility.logd
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(context = this)
-    }
+     val userViewModel: UserViewModel by viewModels ()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
         super.onCreate(savedInstanceState)
+        if(userViewModel == null){
+            Log.d("MainActivity", "userViewModel is null")
+        }
+
         val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
         if (!isLoggedIn) {
             goToAuthActivity()

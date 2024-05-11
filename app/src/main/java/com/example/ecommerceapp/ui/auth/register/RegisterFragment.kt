@@ -30,9 +30,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
@@ -40,9 +41,7 @@ class RegisterFragment : Fragment() {
 
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
 
-    private val registerViewModel: RegisterViewModel by viewModels {
-        RegisterViewModel.RegisterViewModelFactory(contextValue = requireContext())
-    }
+    private val registerViewModel: RegisterViewModel by viewModels()
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
