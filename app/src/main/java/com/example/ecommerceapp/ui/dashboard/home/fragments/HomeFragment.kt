@@ -2,6 +2,7 @@ package com.example.ecommerceapp.ui.dashboard.home.fragments
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ecommerceapp.R
+import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.databinding.FragmentHomeBinding
 import com.example.ecommerceapp.databinding.FragmentLoginBinding
 import com.example.ecommerceapp.ui.dashboard.home.adapter.SalesAdAdapter
@@ -18,8 +20,10 @@ import com.example.ecommerceapp.ui.dashboard.home.viewmodels.HomeViewModel
 import com.example.ecommerceapp.utils.CircleView
 import com.example.ecommerceapp.utils.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
@@ -50,23 +54,26 @@ class HomeFragment : Fragment() {
 
     private fun iniViewModel() {
 
-        val url =
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQrxEKpYtHdVZw4fywzZDni3OB8O4TJU2MNg&s";
-        val salesAds = listOf(
-            SalesAdUIModel(
+        lifecycleScope.launch {
+            viewModel.salesAdsState.collect { resources ->
+                when (resources) {
+                    is Resource.Loading -> {
 
-                title = "Summer Sale",
-                imageUrl = url,
-                endAt = System.currentTimeMillis() + 7200000
-            ),
-            SalesAdUIModel(
+                    }
 
-                title = "Winter Clearance",
+                    is Resource.Success -> {
+                      //  binding.saleAdsShimmerView.root.stopShimmer()
+                      //  binding.saleAdsShimmerView.root.visibility = View.GONE
+                      // initSalesAdsView(resources.data)
+                    }
 
-                imageUrl = url,
-                endAt = System.currentTimeMillis() + 7200000
-            )
-        )
+                    is Resource.Error -> {
+                       // Log.d(TAG, "iniViewModel: Error")
+                    }
+                }
+            }
+        }
+        val salesAds = mutableListOf<SalesAdUIModel>()
         initializeIndicators(salesAds.size)
         val salesAdapter = SalesAdAdapter(salesAds)
         binding.saleAdsViewPager.apply {
@@ -80,11 +87,16 @@ class HomeFragment : Fragment() {
                 }
             })
         }
-
-        lifecycleScope.launch {
-            delay(5000)
-            binding.saleAdsViewPager.currentItem = 1
+        lifecycleScope.launch(IO) {
+            tickerFlow(5000).collect {
+                withContext(Main) {
+                    binding.saleAdsViewPager.setCurrentItem(
+                        (binding.saleAdsViewPager.currentItem + 1) % salesAds.size, true
+                    )
+                }
+            }
         }
+
     }
 
     private var indicators = mutableListOf<CircleView>()
@@ -108,6 +120,7 @@ class HomeFragment : Fragment() {
             indicators.add(circleView)
             binding.indicatorView.addView(circleView)
         }
+
     }
 
     private fun updateIndicators(position: Int) {
@@ -119,4 +132,13 @@ class HomeFragment : Fragment() {
             )
         }
     }
+
+    private fun tickerFlow(period: Long) = flow {
+        while (true) {
+            emit(Unit)
+            delay(period)
+        }
+    }
+
+
 }

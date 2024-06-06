@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.ecommerceapp.utils.CountdownTimer
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Date
-/*
+
 data class SalesAdUIModel(
     val id: String? = null,
     val title: String? = null,
@@ -44,13 +44,6 @@ data class SalesAdUIModel(
     }
 }
 
- */
-data class SalesAdUIModel(
-    val title: String? = null,
-    val description: String? = null,
-    val imageUrl: String? = null,
-    val endAt: Long? = null,
-)
 enum class SalesAdType {
     PRODUCT, CATEGORY, EXTERNAL_LINK, EMPTY
 }

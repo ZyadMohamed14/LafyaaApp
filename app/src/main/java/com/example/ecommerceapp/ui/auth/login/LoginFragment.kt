@@ -87,6 +87,8 @@ class LoginFragment : Fragment() {
                         logAuthIssueToCrashlytics(msg, "Login Error")
                     }
 
+
+                    else -> {}
                 }
             }
         }

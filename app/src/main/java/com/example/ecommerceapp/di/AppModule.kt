@@ -7,6 +7,8 @@ import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
 import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppDataStoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
+import com.example.ecommerceapp.data.reposotiry.home.SalesAdsRepository
+import com.example.ecommerceapp.data.reposotiry.home.SalesAdsRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
@@ -67,6 +69,13 @@ object AppModule {
     fun provideUserFirestoreRepository(
         firebaseFirestore: FirebaseFirestore
     ): UserFirestoreRepository = UserFirestoreRepositoryImpl(firebaseFirestore)
+
+    @Provides
+    @Singleton
+    fun provideSalesAdsRepostory(
+        firebaseFirestore: FirebaseFirestore
+    ): SalesAdsRepository = SalesAdsRepositoryImpl(firebaseFirestore)
+
 
 
 }
