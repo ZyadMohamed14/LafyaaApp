@@ -9,11 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.widget.ViewPager2
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
+import com.example.ecommerceapp.data.model.sale_ads.SalesAdModel
 import com.example.ecommerceapp.databinding.FragmentHomeBinding
-import com.example.ecommerceapp.databinding.FragmentLoginBinding
 import com.example.ecommerceapp.ui.dashboard.home.adapter.SalesAdAdapter
 import com.example.ecommerceapp.ui.dashboard.home.model.SalesAdUIModel
 import com.example.ecommerceapp.ui.dashboard.home.viewmodels.HomeViewModel
@@ -26,8 +25,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Calendar
-import java.util.Date
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -53,25 +50,36 @@ class HomeFragment : Fragment() {
     }
 
     private fun iniViewModel() {
-
+         val TAG = "HomeFragment"
         lifecycleScope.launch {
             viewModel.salesAdsState.collect { resources ->
                 when (resources) {
                     is Resource.Loading -> {
-
+                        Log.d(TAG, "iniViewModel: Loading")
+                     binding.saleAdsShimmerView.root.startShimmer()
                     }
 
                     is Resource.Success -> {
-                      //  binding.saleAdsShimmerView.root.stopShimmer()
-                      //  binding.saleAdsShimmerView.root.visibility = View.GONE
-                      // initSalesAdsView(resources.data)
+                        Log.d(TAG, "iniViewModel: Success")
+                        binding.saleAdsShimmerView.root.stopShimmer()
+                        binding.saleAdsShimmerView.root.visibility = View.GONE
+                       initSalesAdsView(resources.data)
+
                     }
 
                     is Resource.Error -> {
-                       // Log.d(TAG, "iniViewModel: Error")
+                        Log.d(TAG, "iniViewModel: Error")
+                       binding.saleAdsShimmerView.root.startShimmer()
                     }
                 }
             }
+        }
+
+    }
+
+    private fun initSalesAdsView(salesAds: List<SalesAdUIModel>?) {
+        if (salesAds.isNullOrEmpty()) {
+            return
         }
         val salesAds = mutableListOf<SalesAdUIModel>()
         initializeIndicators(salesAds.size)

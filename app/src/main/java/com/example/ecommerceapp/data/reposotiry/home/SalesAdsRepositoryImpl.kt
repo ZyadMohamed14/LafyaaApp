@@ -1,7 +1,9 @@
 package com.example.ecommerceapp.data.reposotiry.home
 
+import android.util.Log
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.sale_ads.SalesAdModel
+import com.example.ecommerceapp.domain.toUIModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,17 +11,29 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class SalesAdsRepositoryImpl @Inject constructor(
-    private val fireStore: FirebaseFirestore
+    private val firestore: FirebaseFirestore
 ) : SalesAdsRepository {
-    override fun getSalesAds(): Flow<Resource<List<SalesAdModel>>>  = flow {
+    val TAG = "HomeFragment"
+    override  fun getSalesAds() = flow {
         try {
+
             emit(Resource.Loading())
-            val salesAds = fireStore.collection("sales_ads").get().await().toObjects(SalesAdModel::class.java)
-            //emit(Resource.Success(salesAds.map { it.toUIModel() }))
-        }catch (e: Exception) {
+            val salesAds =
+                firestore.collection("sales_ads")
+                    .get().await().toObjects(SalesAdModel::class.java)
+            Log.d(TAG, "iniViewModel: salesAds$salesAds")
+            if (salesAds.get(0).title.isNullOrEmpty()) {
+                Log.d(TAG, "iniViewModel: Error")
+                val msg = "No sales ads found"
+               return@flow emit(Resource.Error(Exception(msg)))
+            }
+                emit(Resource.Success(salesAds.map { it.toUIModel() }))
+
+
+
+        } catch (e: Exception) {
             emit(Resource.Error(e))
         }
-
     }
 
 

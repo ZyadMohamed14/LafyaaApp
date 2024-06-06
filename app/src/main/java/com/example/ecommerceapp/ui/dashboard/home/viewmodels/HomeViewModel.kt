@@ -17,10 +17,11 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val salesAdsRepository: SalesAdsRepository
 ) : ViewModel() {
-    val salesAdsState: StateFlow<Resource<List<SalesAdModel>>> =
-        salesAdsRepository.getSalesAds().stateIn(
-            viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = Resource.Loading()
-        )
+
+
+    val salesAdsState = salesAdsRepository.getSalesAds().stateIn(
+        viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = Resource.Loading()
+    )
 
     init {
 //        getSalesAds()
