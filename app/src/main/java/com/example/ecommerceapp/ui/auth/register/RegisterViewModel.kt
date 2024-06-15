@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.ecommerceapp.data.datasource.local.AppPreferencesDataSource
 import com.example.ecommerceapp.data.model.Resource
+import com.example.ecommerceapp.data.model.auth.RegisterRequestModel
+import com.example.ecommerceapp.data.model.auth.RegisterResponseModel
 import com.example.ecommerceapp.data.model.user.UserDetailsModel
 import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
 import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
@@ -24,14 +26,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val appPreferenceRepository: AppPreferenceRepository,
     private val userPreferenceRepository: UserPreferenceRepository,
     private val authRepository: FirebaseAuthRepository
-) :ViewModel() {
+) : ViewModel() {
     private val _registerState = MutableSharedFlow<Resource<UserDetailsModel>>()
     val registerState: SharedFlow<Resource<UserDetailsModel>> = _registerState.asSharedFlow()
+    private val _registerStateWithApi = MutableSharedFlow<Resource<RegisterResponseModel>>()
+    val registerStateWithApi: SharedFlow<Resource<RegisterResponseModel>> =
+        _registerStateWithApi.asSharedFlow()
+
     val name = MutableStateFlow("")
     val email = MutableStateFlow("")
     val password = MutableStateFlow("")
@@ -56,6 +63,30 @@ class RegisterViewModel @Inject constructor(
             _registerState.emit(Resource.Error(Exception("Please Check Your Entered Data")))
         }
     }
+    fun registerWithEmailAndPasswordWithApi() = viewModelScope.launch(IO) {
+        val name = name.value
+        val email = email.value
+        val password = password.value
+        if (isRegisterIsValid.first()) {
+            val registerResponseModel = RegisterRequestModel(
+                fullName = name,
+                email = email,
+                password = password
+            )
+            // handle register flow
+            authRepository.registerEmailAndPasswordWithAPI(registerResponseModel).collect {
+                _registerStateWithApi.emit(it)
+
+            }
+        } else {
+            // emit error
+            _registerStateWithApi.emit(Resource.Error(Exception("Please Check Your Entered Data")))
+        }
+
+
+    }
+
+
 
     fun signUpWithGoogle(idToken: String) = viewModelScope.launch {
         authRepository.registerWithGoogle(idToken).collect {

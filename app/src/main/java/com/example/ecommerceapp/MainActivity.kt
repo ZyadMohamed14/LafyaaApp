@@ -37,13 +37,18 @@ class MainActivity : AppCompatActivity() {
         initSplashScreen()
         super.onCreate(savedInstanceState)
 
-
-        val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
+/* val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
         if (!isLoggedIn) {
+            Log.d("benz", "is User LoggedIn: $isLoggedIn")
+
             goToAuthActivity()
+
             return
         }
 
+ */
+
+      //  Log.d("benz", "is User LoggedIn: $isLoggedIn")
         _bindig = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -91,7 +96,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun goToAuthActivity() {
         val intent = Intent(this, AuthActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
     }

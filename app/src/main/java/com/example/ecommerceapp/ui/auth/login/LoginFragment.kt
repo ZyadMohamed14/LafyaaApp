@@ -134,7 +134,7 @@ class LoginFragment : Fragment() {
             .requestServerAuthCode(BuildConfig.clientServerId).build()
 
         val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-        googleSignInClient.signOut()
+      //  googleSignInClient.signOut()
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }

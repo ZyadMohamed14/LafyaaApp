@@ -155,7 +155,7 @@
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="8dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    tools:listitem="@layout/category_item" />
+                    />
 
             </LinearLayout>
 

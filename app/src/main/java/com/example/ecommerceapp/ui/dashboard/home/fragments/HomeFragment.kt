@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import androidx.lifecycle.lifecycleScope
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
-import com.example.ecommerceapp.data.model.sale_ads.SalesAdModel
 import com.example.ecommerceapp.databinding.FragmentHomeBinding
 import com.example.ecommerceapp.ui.dashboard.home.adapter.SalesAdAdapter
 import com.example.ecommerceapp.ui.dashboard.home.model.SalesAdUIModel
@@ -19,15 +18,13 @@ import com.example.ecommerceapp.ui.dashboard.home.viewmodels.HomeViewModel
 import com.example.ecommerceapp.utils.CircleView
 import com.example.ecommerceapp.utils.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+    val TAG = "HomeFragment"
 
 
     private lateinit var binding: FragmentHomeBinding
@@ -50,7 +47,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun iniViewModel() {
-         val TAG = "HomeFragment"
         lifecycleScope.launch {
             viewModel.salesAdsState.collect { resources ->
                 when (resources) {
@@ -68,8 +64,8 @@ class HomeFragment : Fragment() {
                     }
 
                     is Resource.Error -> {
-                        Log.d(TAG, "iniViewModel: Error")
-                       binding.saleAdsShimmerView.root.startShimmer()
+                        Log.d(TAG, "iniViewModel: erroer")
+
                     }
                 }
             }
@@ -78,12 +74,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun initSalesAdsView(salesAds: List<SalesAdUIModel>?) {
+        Log.d(TAG, "initSalesAdsView: ${salesAds?.size}")
         if (salesAds.isNullOrEmpty()) {
             return
         }
-        val salesAds = mutableListOf<SalesAdUIModel>()
+        val salesAdUIModels = mutableListOf<SalesAdUIModel>()
         initializeIndicators(salesAds.size)
-        val salesAdapter = SalesAdAdapter(salesAds)
+        Log.d(TAG, "****************")
+        Log.d(TAG, "{${salesAds.get(0).imageUrl}}")
+
+
+        val salesAdapter = SalesAdAdapter(lifecycleScope, salesAds)
+
         binding.saleAdsViewPager.apply {
             adapter = salesAdapter
             setPageTransformer(DepthPageTransformer())
@@ -95,18 +97,28 @@ class HomeFragment : Fragment() {
                 }
             })
         }
-        lifecycleScope.launch(IO) {
-            tickerFlow(5000).collect {
-                withContext(Main) {
-                    binding.saleAdsViewPager.setCurrentItem(
-                        (binding.saleAdsViewPager.currentItem + 1) % salesAds.size, true
-                    )
-                }
-            }
-        }
+//
+//            lifecycleScope.launch(IO) {
+//                tickerFlow(5000).collect {
+//                    withContext(Main) {
+//                        binding.saleAdsViewPager.setCurrentItem(
+//                            (binding.saleAdsViewPager.currentItem + 1) % salesAds.size, true
+//                        )
+//                    }
+//                }
+//            }
+
+
 
     }
-
+    override fun onResume() {
+        super.onResume()
+        viewModel.startTimer()
+    }
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopTimer()
+    }
     private var indicators = mutableListOf<CircleView>()
     private fun initializeIndicators(count: Int) {
         for (i in 0 until count) {

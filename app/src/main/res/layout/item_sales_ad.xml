@@ -49,8 +49,8 @@
             <TextView
                 android:id="@+id/hoursTextView"
                 style="@style/SaleTimerItemTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                app:countdownTimer="@{salesAd.hours}"
+                app:lifecycleScope="@{lifecycleScope}"
                 tools:text="08" />
 
             <TextView
@@ -65,8 +65,9 @@
             <TextView
                 android:id="@+id/minutesTextView"
                 style="@style/SaleTimerItemTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+                app:countdownTimer="@{salesAd.minutes}"
+                app:lifecycleScope="@{lifecycleScope}"
                 tools:text="34" />
 
             <TextView
@@ -80,8 +81,9 @@
             <TextView
                 android:id="@+id/secondsTextView"
                 style="@style/SaleTimerItemTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+                app:countdownTimer="@{salesAd.seconds}"
+                app:lifecycleScope="@{lifecycleScope}"
                 tools:text="52" />
         </LinearLayout>
     </RelativeLayout>

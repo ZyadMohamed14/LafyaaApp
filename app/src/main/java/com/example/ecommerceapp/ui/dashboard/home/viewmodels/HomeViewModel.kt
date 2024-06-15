@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val salesAdsRepository: SalesAdsRepository
+    salesAdsRepository: SalesAdsRepository
 ) : ViewModel() {
 
 
@@ -23,7 +23,10 @@ class HomeViewModel @Inject constructor(
         viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = Resource.Loading()
     )
 
-    init {
-//        getSalesAds()
+    fun startTimer() {
+        salesAdsState.value.data?.forEach { it.startCountdown() }
+    }
+    fun stopTimer() {
+        salesAdsState.value.data?.forEach { it.stopCountdown() }
     }
 }

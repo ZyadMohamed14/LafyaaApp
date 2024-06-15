@@ -16,21 +16,13 @@ class SalesAdsRepositoryImpl @Inject constructor(
     val TAG = "HomeFragment"
     override  fun getSalesAds() = flow {
         try {
-
             emit(Resource.Loading())
             val salesAds =
                 firestore.collection("sales_ads")
                     .get().await().toObjects(SalesAdModel::class.java)
-            Log.d(TAG, "iniViewModel: salesAds$salesAds")
-            if (salesAds.get(0).title.isNullOrEmpty()) {
-                Log.d(TAG, "iniViewModel: Error")
-                val msg = "No sales ads found"
-               return@flow emit(Resource.Error(Exception(msg)))
-            }
-                emit(Resource.Success(salesAds.map { it.toUIModel() }))
+            Log.d(TAG, "getSalesAds: ${salesAds.get(0).id}")
 
-
-
+            emit(Resource.Success(salesAds.map { it.toUIModel() }))
         } catch (e: Exception) {
             emit(Resource.Error(e))
         }

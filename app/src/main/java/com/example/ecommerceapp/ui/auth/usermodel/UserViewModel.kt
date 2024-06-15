@@ -89,7 +89,7 @@ class UserViewModel @Inject constructor(
     }
 
     companion object {
-        private const val TAG = "UserViewModel"
+        private const val TAG = "benz"
     }
 
     override fun onCleared() {

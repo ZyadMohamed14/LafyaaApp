@@ -10,23 +10,33 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.ecommerceapp.R
 
-@BindingAdapter("imageUrl")
-fun loadImage(view: ImageView, imageUrl: String?) {
-    val loading = getGlideCircleLoading(view)
+object GlideViews {
+    @JvmStatic
+    @BindingAdapter("imageUrl")
+    fun loadImage(view: ImageView, imageUrl: String?) {
+        val loading = getGlideCircleLoading(view)
 
-    Glide.with(view.context)
-        .load(imageUrl).placeholder(loading)
-        .diskCacheStrategy(DiskCacheStrategy.ALL) // TODO Don't use cache
-//        .signature(Object())
-        .transform(CenterCrop(), RoundedCorners(16), )
-        .into(view)
-}
-
-fun getGlideCircleLoading(view: ImageView): CircularProgressDrawable {
-    return CircularProgressDrawable(view.context).apply {
-        strokeWidth = 5f
-        centerRadius = 30f
-        setColorSchemeColors(ContextCompat.getColor(view.context, R.color.primary_color))
-        start()
+        imageUrl?.let {
+            Glide.with(view.context)
+                .load(it)
+                .placeholder(R.drawable.ic_launcher_background)
+                // Consider removing caching for dynamic images or use a more specific caching strategy
+                // .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .transform(CenterCrop(), RoundedCorners(16))
+                .into(view)
+        }
+    }
+    fun getGlideCircleLoading(view: ImageView): CircularProgressDrawable {
+        return CircularProgressDrawable(view.context).apply {
+            strokeWidth = 5f
+            centerRadius = 30f
+            setColorSchemeColors(ContextCompat.getColor(view.context, R.color.primary_color))
+            start()
+        }
     }
 }
+
+
+
+
+
