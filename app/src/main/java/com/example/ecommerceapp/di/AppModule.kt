@@ -3,6 +3,7 @@ package com.example.ecommerceapp.di
 import android.app.Application
 import android.content.Context
 import com.example.ecommerceapp.data.datasource.local.AppPreferencesDataSource
+import com.example.ecommerceapp.data.reposotiry.auth.CloudFunctionAPI
 import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
 import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppDataStoreRepositoryImpl
@@ -55,8 +56,9 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(
         auth: FirebaseAuth,
-        firestore: FirebaseFirestore
-    ): FirebaseAuthRepository = FirebaseAuthRepositoryImpl(auth, firestore)
+        firestore: FirebaseFirestore,
+        cloudFunctionAPI: CloudFunctionAPI
+    ): FirebaseAuthRepository = FirebaseAuthRepositoryImpl(auth, firestore,cloudFunctionAPI)
 
     @Provides
     @Singleton
@@ -75,6 +77,12 @@ object AppModule {
     fun provideSalesAdsRepostory(
         firebaseFirestore: FirebaseFirestore
     ): SalesAdsRepository = SalesAdsRepositoryImpl(firebaseFirestore)
+
+    @Provides
+    @Singleton
+    fun provideCloudFunctionsApi(): CloudFunctionAPI {
+        return CloudFunctionAPI.create()
+    }
 
 
 
