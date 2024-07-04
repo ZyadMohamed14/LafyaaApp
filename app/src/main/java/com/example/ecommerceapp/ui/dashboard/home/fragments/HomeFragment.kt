@@ -20,6 +20,7 @@ import com.example.ecommerceapp.ui.dashboard.home.adapter.SalesAdAdapter
 import com.example.ecommerceapp.ui.dashboard.home.model.CategoryUIModel
 import com.example.ecommerceapp.ui.dashboard.home.model.SalesAdUIModel
 import com.example.ecommerceapp.ui.dashboard.home.viewmodels.HomeViewModel
+import com.example.ecommerceapp.ui.products.ProductAdapter
 import com.example.ecommerceapp.utils.CircleView
 import com.example.ecommerceapp.utils.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,22 +35,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+    private val flashSaleAdapter by lazy { ProductAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         iniViewModel()
-//        lifecycleScope.launch {
-//            val p1 = context?.let { UserPreferenceRepositoryImpl(it) }
-//
-//            Log.d(TAG, "iniViewModel: ${p1?.getUserCountry()?.collect(
-//                {
-//                    Log.d(TAG, "iniViewModel: ${it.name}")
-//                }
-//            )}")
-    //}
-
+        initViews()
 
 
     }
@@ -64,6 +57,18 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    private fun initViews() {
+        binding.flashSaleProductsRv.apply {
+            adapter = flashSaleAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+            //   addItemDecoration(HorizontalSpaceItemDecoration(16))
+        }
+
+    }
+
+
     private fun iniViewModel() {
 
         lifecycleScope.launch {
@@ -71,14 +76,14 @@ class HomeFragment : Fragment() {
                 when (resources) {
                     is Resource.Loading -> {
                         Log.d(TAG, "iniViewModel: Loading")
-                     binding.saleAdsShimmerView.root.startShimmer()
+                        binding.saleAdsShimmerView.root.startShimmer()
                     }
 
                     is Resource.Success -> {
                         Log.d(TAG, "iniViewModel: Success")
                         binding.saleAdsShimmerView.root.stopShimmer()
                         binding.saleAdsShimmerView.root.visibility = View.GONE
-                       initSalesAdsView(resources.data)
+                        initSalesAdsView(resources.data)
 
                     }
 
@@ -97,7 +102,7 @@ class HomeFragment : Fragment() {
                     }
 
                     is Resource.Success -> {
-      //                 binding.categoriesShimmerView.root.stopShimmer()
+                        //                 binding.categoriesShimmerView.root.stopShimmer()
 //                       binding.categoriesShimmerView.root.visibility = View.GONE
                         Log.d(TAG, "iniViewModel: categories Success = ${resources.data}")
                         initCategoriesView(resources.data)
@@ -107,6 +112,12 @@ class HomeFragment : Fragment() {
                         Log.d(TAG, "iniViewModel: categories Error")
                     }
                 }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.flashSaleState.collect { productsList ->
+                flashSaleAdapter.submitList(productsList)
+                binding.invalidateAll()
             }
         }
 
@@ -148,8 +159,8 @@ class HomeFragment : Fragment() {
 //            }
 
 
-
     }
+
     private fun initCategoriesView(data: List<CategoryUIModel>?) {
         if (data.isNullOrEmpty()) {
             return
@@ -164,14 +175,17 @@ class HomeFragment : Fragment() {
             )
         }
     }
+
     override fun onResume() {
         super.onResume()
         viewModel.startTimer()
     }
+
     override fun onPause() {
         super.onPause()
         viewModel.stopTimer()
     }
+
     private var indicators = mutableListOf<CircleView>()
     private fun initializeIndicators(count: Int) {
         for (i in 0 until count) {

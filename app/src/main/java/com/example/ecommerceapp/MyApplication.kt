@@ -33,3 +33,4 @@ class MyApplication : Application() {
         private const val TAG = "MyApplication"
     }
 }
+//<!-- android:visibilities="@{viewmodel.isEmptyFlashSale}"!-->

@@ -13,6 +13,8 @@ import com.example.ecommerceapp.data.reposotiry.home.category.CategoriesReposito
 import com.example.ecommerceapp.data.reposotiry.home.category.CategoriesRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.home.sales.SalesAdsRepository
 import com.example.ecommerceapp.data.reposotiry.home.sales.SalesAdsRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.product.ProductsRepository
+import com.example.ecommerceapp.data.reposotiry.product.ProductsRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
@@ -95,6 +97,11 @@ object AppModule {
     @Singleton
     fun provideCountryRepository(firebaseFirestore: FirebaseFirestore): CountryRepository {
         return CountryRepositoryImpl(firebaseFirestore)
+    }
+    @Provides
+    @Singleton
+    fun provideProductRepository(firebaseFirestore: FirebaseFirestore): ProductsRepository {
+        return ProductsRepositoryImpl(firebaseFirestore)
     }
 
 
