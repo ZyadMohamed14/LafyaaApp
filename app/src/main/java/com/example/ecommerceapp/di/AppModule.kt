@@ -3,8 +3,10 @@ package com.example.ecommerceapp.di
 import android.content.Context
 import com.example.ecommerceapp.data.datasource.local.AppPreferencesDataSource
 import com.example.ecommerceapp.data.reposotiry.auth.CloudFunctionAPI
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.auth.country.CountryRepository
+import com.example.ecommerceapp.data.reposotiry.auth.country.CountryRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepository
+import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppDataStoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.home.category.CategoriesRepository
@@ -88,6 +90,11 @@ object AppModule {
     @Singleton
     fun provideCategoryRepository(firebaseFirestore: FirebaseFirestore): CategoriesRepository {
         return CategoriesRepositoryImpl(firebaseFirestore)
+    }
+    @Provides
+    @Singleton
+    fun provideCountryRepository(firebaseFirestore: FirebaseFirestore): CountryRepository {
+        return CountryRepositoryImpl(firebaseFirestore)
     }
 
 

@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
+import com.example.ecommerceapp.data.model.user.UserDetailsPreferences
+import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepositoryImpl
 import com.example.ecommerceapp.databinding.FragmentHomeBinding
 import com.example.ecommerceapp.ui.dashboard.home.adapter.CategoriesAdapter
 import com.example.ecommerceapp.ui.dashboard.home.adapter.SalesAdAdapter
@@ -38,7 +40,20 @@ class HomeFragment : Fragment() {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         iniViewModel()
+//        lifecycleScope.launch {
+//            val p1 = context?.let { UserPreferenceRepositoryImpl(it) }
+//
+//            Log.d(TAG, "iniViewModel: ${p1?.getUserCountry()?.collect(
+//                {
+//                    Log.d(TAG, "iniViewModel: ${it.name}")
+//                }
+//            )}")
+    //}
+
+
+
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +65,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun iniViewModel() {
+
         lifecycleScope.launch {
             viewModel.salesAdsState.collect { resources ->
                 when (resources) {
@@ -81,8 +97,8 @@ class HomeFragment : Fragment() {
                     }
 
                     is Resource.Success -> {
-//                        binding.categoriesShimmerView.root.stopShimmer()
-//                        binding.categoriesShimmerView.root.visibility = View.GONE
+      //                 binding.categoriesShimmerView.root.stopShimmer()
+//                       binding.categoriesShimmerView.root.visibility = View.GONE
                         Log.d(TAG, "iniViewModel: categories Success = ${resources.data}")
                         initCategoriesView(resources.data)
                     }
@@ -101,7 +117,7 @@ class HomeFragment : Fragment() {
         if (salesAds.isNullOrEmpty()) {
             return
         }
-        val salesAdUIModels = mutableListOf<SalesAdUIModel>()
+
         initializeIndicators(salesAds.size)
         Log.d(TAG, "****************")
         Log.d(TAG, "{${salesAds.get(0).imageUrl}}")

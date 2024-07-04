@@ -4,8 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ecommerceapp.data.model.Resource
-import com.example.ecommerceapp.data.model.user.UserDetailsModel
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
+import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepository
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
@@ -67,7 +66,7 @@ class UserViewModel @Inject constructor(
                 is Resource.Success -> {
 
                     resource.data?.let {
-                        userPreferenceRepository.updateUserDetails(it.toUserDetailsPreferences())
+                       // userPreferenceRepository.updateUserDetails(it.toUserDetailsPreferences())
                     }
                 }
 

@@ -37,16 +37,14 @@ class MainActivity : AppCompatActivity() {
         initSplashScreen()
         super.onCreate(savedInstanceState)
 
-/* val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
+ val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
         if (!isLoggedIn) {
             Log.d("benz", "is User LoggedIn: $isLoggedIn")
-
             goToAuthActivity()
-
             return
         }
 
- */
+
 
       //  Log.d("benz", "is User LoggedIn: $isLoggedIn")
         _bindig = ActivityMainBinding.inflate(layoutInflater)

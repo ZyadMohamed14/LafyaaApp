@@ -1,20 +1,14 @@
 package com.example.ecommerceapp.ui.auth.register
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.ecommerceapp.data.datasource.local.AppPreferencesDataSource
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.auth.RegisterRequestModel
 import com.example.ecommerceapp.data.model.auth.RegisterResponseModel
 import com.example.ecommerceapp.data.model.user.UserDetailsModel
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
-import com.example.ecommerceapp.data.reposotiry.common.AppDataStoreRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepository
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
-import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepositoryImpl
 import com.example.ecommerceapp.utils.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO

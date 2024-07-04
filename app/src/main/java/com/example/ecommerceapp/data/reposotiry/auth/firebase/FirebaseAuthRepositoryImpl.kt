@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.data.reposotiry.auth
+package com.example.ecommerceapp.data.reposotiry.auth.firebase
 
 import android.util.Log
 import com.example.ecommerceapp.data.model.AuthProvider
@@ -6,6 +6,8 @@ import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.auth.RegisterRequestModel
 import com.example.ecommerceapp.data.model.auth.RegisterResponseModel
 import com.example.ecommerceapp.data.model.user.UserDetailsModel
+import com.example.ecommerceapp.data.reposotiry.auth.CloudFunctionAPI
+import com.example.ecommerceapp.data.reposotiry.auth.handleErrorResponse
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
 import com.google.firebase.auth.AuthResult
@@ -58,13 +60,13 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
                 return@flow
             }
 
-            if (authResult.user?.isEmailVerified == false) {
-                authResult.user?.sendEmailVerification()?.await()
-                val msg = "Email not verified, verification email sent to user"
-                logAuthIssueToCrashlytics(msg, provider.name)
-                emit(Resource.Error(Exception(msg)))
-                return@flow
-            }
+//            if (authResult.user?.isEmailVerified == false) {
+//                authResult.user?.sendEmailVerification()?.await()
+//                val msg = "Email not verified, verification email sent to user"
+//                logAuthIssueToCrashlytics(msg, provider.name)
+//                emit(Resource.Error(Exception(msg)))
+//                return@flow
+//            }
 
             // get user details from firestore
             val userDoc = firestore.collection("users").document(userId).get().await()

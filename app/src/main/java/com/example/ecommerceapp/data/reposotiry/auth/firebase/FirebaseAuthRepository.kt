@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.data.reposotiry.auth
+package com.example.ecommerceapp.data.reposotiry.auth.firebase
 
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.auth.RegisterRequestModel

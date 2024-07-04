@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.ecommerceapp.R
 
@@ -28,7 +29,24 @@ object GlideViews {
         }
     }
   //  @JvmStatic
+  @BindingAdapter("normalImageUrl")
+  @JvmStatic
+  fun categoryUrl(view: ImageView, imageUrl: String?) {
+      val loading = getGlideCircleLoading(view)
 
+      Glide.with(view.context).load(imageUrl).placeholder(loading)
+          .diskCacheStrategy(DiskCacheStrategy.ALL)
+          .transform(CenterInside()).into(view)
+  }
+
+    @BindingAdapter("circleImageUrl")
+    @JvmStatic
+    fun circleNormalImage(view: ImageView, imageUrl: String?) {
+        val loading = getGlideCircleLoading(view)
+        Glide.with(view.context).load(imageUrl).placeholder(loading)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .transform(CircleCrop()).into(view)
+    }
     fun getGlideCircleLoading(view: ImageView): CircularProgressDrawable {
         return CircularProgressDrawable(view.context).apply {
             strokeWidth = 5f

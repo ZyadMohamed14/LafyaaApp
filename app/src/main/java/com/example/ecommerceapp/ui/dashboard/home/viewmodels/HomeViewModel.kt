@@ -25,7 +25,11 @@ class HomeViewModel @Inject constructor(
     val categoriesState = categoriesRepository.getCategories().stateIn(
         viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = Resource.Loading()
     )
-
+//    val countryState = userPreferenceRepository.getUserCountry().stateIn(
+//        viewModelScope + IO,
+//        started = SharingStarted.Eagerly,
+//        initialValue = CountryData.getDefaultInstance()
+//    )
 
     fun startTimer() {
         salesAdsState.value.data?.forEach { it.startCountdown() }
