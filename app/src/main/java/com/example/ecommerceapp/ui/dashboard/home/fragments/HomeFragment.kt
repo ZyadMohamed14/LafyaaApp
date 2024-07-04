@@ -36,6 +36,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private val flashSaleAdapter by lazy { ProductAdapter() }
+    private val megaSaleAdapter by lazy { ProductAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,6 +61,13 @@ class HomeFragment : Fragment() {
     private fun initViews() {
         binding.flashSaleProductsRv.apply {
             adapter = flashSaleAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+            //   addItemDecoration(HorizontalSpaceItemDecoration(16))
+        }
+        binding.megaSaleProductsRv.apply {
+            adapter = megaSaleAdapter
             layoutManager = LinearLayoutManager(
                 requireContext(), LinearLayoutManager.HORIZONTAL, false
             )
@@ -117,6 +125,13 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.flashSaleState.collect { productsList ->
                 flashSaleAdapter.submitList(productsList)
+                binding.invalidateAll()
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.megaSaleState.collect { productsList ->
+
+                megaSaleAdapter.submitList(productsList)
                 binding.invalidateAll()
             }
         }

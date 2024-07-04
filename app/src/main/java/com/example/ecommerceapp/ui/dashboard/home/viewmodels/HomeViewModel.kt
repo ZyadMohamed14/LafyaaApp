@@ -2,7 +2,10 @@ package com.example.ecommerceapp.ui.dashboard.home.viewmodels
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.view.View
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.ecommerceapp.data.model.ProductModel
 import com.example.ecommerceapp.data.model.ProductSaleType
@@ -20,6 +23,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
@@ -46,6 +50,11 @@ class HomeViewModel @Inject constructor(
         initialValue = CountryData.getDefaultInstance()
     )
     val flashSaleState = getProductsSales(ProductSaleType.FLASH_SALE)
+    val isEmptyFlashSale = flashSaleState.map { it.isEmpty() }.asLiveData()
+    val megaSaleState = getProductsSales(ProductSaleType.MEGA_SALE)
+    val isEmptyMegaSale = megaSaleState.map { it.isEmpty() }.asLiveData()
+
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun getProductsSales(productSaleType: ProductSaleType): StateFlow<List<ProductUIModel>> =
         countryState.mapLatest {
@@ -54,16 +63,24 @@ class HomeViewModel @Inject constructor(
         }.mapLatest { it.first().map { getProductModel(it) } }.stateIn(
             viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = emptyList()
         )
+
     private fun getProductModel(product: ProductModel): ProductUIModel {
         val productUIModel = product.toProductUIModel().copy(
             currencySymbol = countryState.value?.currencySymbol ?: ""
         )
         return productUIModel
     }
+
     fun startTimer() {
         salesAdsState.value.data?.forEach { it.startCountdown() }
     }
+
     fun stopTimer() {
         salesAdsState.value.data?.forEach { it.stopCountdown() }
     }
+}
+@BindingAdapter("isVisible")
+fun setVisibility(view: View, isEmpty: Boolean) {
+    Log.d("HomeViewModel", "tage = ${view.tag}, setVisibility: $isEmpty")
+    view.visibility = if (isEmpty) View.GONE else View.VISIBLE
 }

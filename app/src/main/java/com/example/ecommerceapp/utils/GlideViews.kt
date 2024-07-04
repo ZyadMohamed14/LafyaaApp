@@ -21,7 +21,7 @@ object GlideViews {
         imageUrl?.let {
             Glide.with(view.context)
                 .load(it)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.loadinganimation)
                 // Consider removing caching for dynamic images or use a more specific caching strategy
                 // .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .transform(CenterCrop(), RoundedCorners(16))

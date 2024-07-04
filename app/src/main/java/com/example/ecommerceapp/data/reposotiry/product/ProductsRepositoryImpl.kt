@@ -6,6 +6,7 @@ import com.example.ecommerceapp.data.model.Resource
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -31,6 +32,7 @@ class ProductsRepositoryImpl @Inject constructor(
         pageLimit: Int
     ): Flow<List<ProductModel>> =
         flow {
+            delay(3000)
             Log.d("ProductsRepositoryImpl", "getSaleProducts: $countryID, $saleType")
             val products = firestore.collection("products").whereEqualTo("sale_type", saleType)
                 .whereEqualTo("country_id", countryID).orderBy("price").limit(pageLimit.toLong())
