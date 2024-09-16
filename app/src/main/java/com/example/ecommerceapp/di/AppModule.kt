@@ -1,12 +1,20 @@
 package com.example.ecommerceapp.di
 
-import android.app.Application
 import android.content.Context
 import com.example.ecommerceapp.data.datasource.local.AppPreferencesDataSource
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.auth.CloudFunctionAPI
+import com.example.ecommerceapp.data.reposotiry.auth.country.CountryRepository
+import com.example.ecommerceapp.data.reposotiry.auth.country.CountryRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepository
+import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppDataStoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
+import com.example.ecommerceapp.data.reposotiry.home.category.CategoriesRepository
+import com.example.ecommerceapp.data.reposotiry.home.category.CategoriesRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.home.sales.SalesAdsRepository
+import com.example.ecommerceapp.data.reposotiry.home.sales.SalesAdsRepositoryImpl
+import com.example.ecommerceapp.data.reposotiry.product.ProductsRepository
+import com.example.ecommerceapp.data.reposotiry.product.ProductsRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
@@ -53,8 +61,9 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(
         auth: FirebaseAuth,
-        firestore: FirebaseFirestore
-    ): FirebaseAuthRepository = FirebaseAuthRepositoryImpl(auth, firestore)
+        firestore: FirebaseFirestore,
+        cloudFunctionAPI: CloudFunctionAPI
+    ): FirebaseAuthRepository = FirebaseAuthRepositoryImpl(auth, firestore,cloudFunctionAPI)
 
     @Provides
     @Singleton
@@ -67,6 +76,35 @@ object AppModule {
     fun provideUserFirestoreRepository(
         firebaseFirestore: FirebaseFirestore
     ): UserFirestoreRepository = UserFirestoreRepositoryImpl(firebaseFirestore)
+
+    @Provides
+    @Singleton
+    fun provideSalesAdsRepostory(
+        firebaseFirestore: FirebaseFirestore
+    ): SalesAdsRepository = SalesAdsRepositoryImpl(firebaseFirestore)
+
+    @Provides
+    @Singleton
+    fun provideCloudFunctionsApi(): CloudFunctionAPI {
+        return CloudFunctionAPI.create()
+    }
+    @Provides
+    @Singleton
+    fun provideCategoryRepository(firebaseFirestore: FirebaseFirestore): CategoriesRepository {
+        return CategoriesRepositoryImpl(firebaseFirestore)
+    }
+    @Provides
+    @Singleton
+    fun provideCountryRepository(firebaseFirestore: FirebaseFirestore): CountryRepository {
+        return CountryRepositoryImpl(firebaseFirestore)
+    }
+    @Provides
+    @Singleton
+    fun provideProductRepository(firebaseFirestore: FirebaseFirestore): ProductsRepository {
+        return ProductsRepositoryImpl(firebaseFirestore)
+    }
+
+
 
 
 }

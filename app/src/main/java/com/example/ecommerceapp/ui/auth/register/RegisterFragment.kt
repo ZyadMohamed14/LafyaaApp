@@ -1,5 +1,6 @@
 package com.example.ecommerceapp.ui.auth.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,10 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.ecommerceapp.MainActivity
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.databinding.FragmentRegisterBinding
 import com.example.ecommerceapp.ui.auth.getGoogleRequestIntent
+import com.example.ecommerceapp.ui.auth.usermodel.UserViewModel
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.ProgressDialog
 import com.example.ecommerceapp.utils.RegisterException
@@ -42,6 +45,7 @@ class RegisterFragment : Fragment() {
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
 
     private val registerViewModel: RegisterViewModel by viewModels()
+
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
@@ -76,7 +80,8 @@ class RegisterFragment : Fragment() {
         initListeners()
     }
     private fun initViewModel() {
-        lifecycleScope.launch {
+
+         lifecycleScope.launch {
             registerViewModel.registerState.collect { resource ->
                 Log.d("benz", "$resource")
                 when (resource) {
@@ -88,7 +93,13 @@ class RegisterFragment : Fragment() {
                     is Resource.Success -> {
                         progressDialog.dismiss()
                         Log.d("benz", "initViewModel:Resource.Success ")
-                        showLoginSuccessDialog()
+                       // showLoginSuccessDialog()
+                        progressDialog.dismiss()
+                       val intent = Intent(requireActivity(), MainActivity::class.java).apply {
+                           flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                       }
+                      startActivity(intent)
                     }
 
                     is Resource.Error -> {
@@ -100,10 +111,34 @@ class RegisterFragment : Fragment() {
                 }
             }
         }
+
+
+//        lifecycleScope.launch {
+//            registerViewModel.registerStateWithApi.collect{resource->
+//                when(resource){
+//                    is Resource.Error -> {
+//                        progressDialog.dismiss()
+//                        val msg = resource.exception?.message ?: getString(R.string.generic_err_msg)
+//                        view?.showSnakeBarError(msg)
+//                    }
+//                    is Resource.Loading -> {
+//                        progressDialog.show()
+//                    }
+//                    is Resource.Success -> {
+//                        progressDialog.dismiss()
+//                        Log.d("benz", "initViewModel:Resource.Success ")
+//                        val intent = Intent(requireActivity(), MainActivity::class.java)
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                        startActivity(intent)
+//                    }
+//                }
+//            }
+//        }
     }
     private fun initListeners() {
-        binding.signInTv.setOnClickListener {
-            findNavController().popBackStack()
+        binding.signupBtn.setOnClickListener {
+
+           // findNavController().popBackStack()
         }
         binding.googleSignupBtn.setOnClickListener {
             registerWithGoogleRequest()

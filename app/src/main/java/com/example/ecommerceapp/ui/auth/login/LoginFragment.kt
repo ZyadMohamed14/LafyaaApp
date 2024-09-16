@@ -17,6 +17,7 @@ import com.example.ecommerceapp.MainActivity
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.databinding.FragmentLoginBinding
+import com.example.ecommerceapp.ui.auth.country.CountriesFragment
 import com.example.ecommerceapp.ui.auth.forgotpassword.ForgetPasswordFragment
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
@@ -64,7 +65,9 @@ class LoginFragment : Fragment() {
         binding.viewModel = loginViewModel
         initViewModel()
         initListeners()
-
+        val countryFragment = CountriesFragment()
+        countryFragment.isCancelable = false
+        countryFragment.show(parentFragmentManager, "country-fragment")
     }
 
     private fun initViewModel() {
@@ -87,6 +90,8 @@ class LoginFragment : Fragment() {
                         logAuthIssueToCrashlytics(msg, "Login Error")
                     }
 
+
+                    else -> {}
                 }
             }
         }
@@ -132,7 +137,7 @@ class LoginFragment : Fragment() {
             .requestServerAuthCode(BuildConfig.clientServerId).build()
 
         val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-        googleSignInClient.signOut()
+      //  googleSignInClient.signOut()
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }
