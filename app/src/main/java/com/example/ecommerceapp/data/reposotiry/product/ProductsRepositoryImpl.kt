@@ -32,7 +32,7 @@ class ProductsRepositoryImpl @Inject constructor(
         pageLimit: Int
     ): Flow<List<ProductModel>> =
         flow {
-            delay(5000)
+            delay(4000)
             Log.d("ProductsRepositoryImpl", "getSaleProducts: $countryID, $saleType")
             val products = firestore.collection("products").whereEqualTo("sale_type", saleType)
                 .whereEqualTo("country_id", countryID).orderBy("price").limit(pageLimit.toLong())
