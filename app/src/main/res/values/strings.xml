@@ -45,5 +45,6 @@
     <string name="flash_sale">Flash Sale</string>
     <string name="see_more">See more</string>
     <string name="mega_sale">Mega Sale</string>
+    <string name="title_activity_product_details">ProductDetailsActivity</string>
 
 </resources>

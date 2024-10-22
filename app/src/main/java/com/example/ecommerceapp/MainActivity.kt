@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
@@ -28,7 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
      val userViewModel: UserViewModel by viewModels ()
 
     private var _bindig: ActivityMainBinding? = null
@@ -37,59 +39,24 @@ class MainActivity : AppCompatActivity() {
         initSplashScreen()
         super.onCreate(savedInstanceState)
 
- val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
-        if (!isLoggedIn) {
-          //  Log.d("benz", "is User LoggedIn: $isLoggedIn")
-            goToAuthActivity()
-            return
-        }
+// val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
+//        if (!isLoggedIn) {
+//          //  Log.d("benz", "is User LoggedIn: $isLoggedIn")
+//            goToAuthActivity()
+//            return
+//        }
 
 
 
       //  Log.d("benz", "is User LoggedIn: $isLoggedIn")
-        _bindig = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-
-        initViewModel()
-        initViews()
-    }
-    private fun initViews() {
-        initViewPager()
-        initBottomNavigationView()
-    }
-    private fun initBottomNavigationView() {
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.homeFragment -> binding.homeViewPager.currentItem = 0
-                R.id.exploreFragment -> binding.homeViewPager.currentItem = 1
-                R.id.cartFragment -> binding.homeViewPager.currentItem = 2
-                R.id.offerFragment -> binding.homeViewPager.currentItem = 3
-                R.id.accountFragment -> binding.homeViewPager.currentItem = 4
-            }
-            true
+      //  _bindig = ActivityMainBinding.inflate(layoutInflater)
+        setContent{
+          DashBoardScreen()
         }
-    }
 
 
-    private fun initViewPager() {
-        val fragments = listOf(
-            HomeFragment(),
-            ExploreFragment(),
-            CartFragment(),
-            OffersFragment(),
-            AccountFragment()
-        )
-        binding.homeViewPager.offscreenPageLimit = fragments.size
-        binding.homeViewPager.adapter = HomeViewPagerAdapter(this, fragments)
-        binding.homeViewPager.registerOnPageChangeCallback(
-            object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    binding.bottomNavigationView.menu.getItem(position).isChecked = true
-                }
-            }
-        )
+      //  initViewModel()
+       // initViews()
     }
 
     private fun goToAuthActivity() {
@@ -139,3 +106,43 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+/*
+ private fun initViews() {
+        initViewPager()
+        initBottomNavigationView()
+    }
+    private fun initBottomNavigationView() {
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.homeFragment -> binding.homeViewPager.currentItem = 0
+                R.id.exploreFragment -> binding.homeViewPager.currentItem = 1
+                R.id.cartFragment -> binding.homeViewPager.currentItem = 2
+                R.id.offerFragment -> binding.homeViewPager.currentItem = 3
+                R.id.accountFragment -> binding.homeViewPager.currentItem = 4
+            }
+            true
+        }
+    }
+
+
+    private fun initViewPager() {
+        val fragments = listOf(
+            HomeFragment(),
+            ExploreFragment(),
+            CartFragment(),
+            OffersFragment(),
+            AccountFragment()
+        )
+        binding.homeViewPager.offscreenPageLimit = fragments.size
+        binding.homeViewPager.adapter = HomeViewPagerAdapter(this, fragments)
+        binding.homeViewPager.registerOnPageChangeCallback(
+            object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.bottomNavigationView.menu.getItem(position).isChecked = true
+                }
+            }
+        )
+    }
+
+ */

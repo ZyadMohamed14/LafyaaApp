@@ -1,5 +1,6 @@
 package com.example.ecommerceapp.data.reposotiry.home.category
 
+import android.util.Log
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.category.CategoryModel
 import com.example.ecommerceapp.domain.toUIModel
@@ -18,7 +19,7 @@ class CategoriesRepositoryImpl @Inject constructor(private val firestore: Fireba
                 emit(Resource.Loading())
                 val categories = firestore.collection("categories").get().await()
                     .toObjects(CategoryModel::class.java)
-               // Log.d(TAG, "categories = ${categories}")
+                Log.d(tag, "categories = ${categories}")
 
                 // repeat categories item 10 times
               val repeatCategories = mutableListOf<CategoryModel>()
@@ -28,9 +29,13 @@ class CategoriesRepositoryImpl @Inject constructor(private val firestore: Fireba
 
                 emit(Resource.Success(repeatCategories.map { it.toUIModel() }))
             } catch (e: Exception) {
-               // Log.e(TAG, "getCategories: error", e)
+
+                Log.e(tag, "getCategories: error", e)
                 emit(Resource.Error(e))
             }
         }
+    }
+    companion object{
+        val tag = "CategoriesRepository"
     }
 }
