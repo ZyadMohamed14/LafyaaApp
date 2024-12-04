@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 
 /*
+// for test
     val product = ProductModel(
                 id = null, // Firestore will generate an ID
                 name = "Hackett - slim fit 5-pocket jeans - men",
