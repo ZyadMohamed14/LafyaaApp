@@ -119,7 +119,6 @@ dependencies {
    implementation("androidx.compose.ui:ui-graphics")
    implementation("com.valentinilk.shimmer:compose-shimmer:1.0.3")
     implementation("com.google.firebase:firebase-storage-ktx")
-
     implementation ("com.google.accompanist:accompanist-placeholder-material:0.36.0")
 
 

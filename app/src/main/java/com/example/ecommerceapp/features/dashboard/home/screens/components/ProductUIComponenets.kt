@@ -109,7 +109,11 @@ fun AllProductsSection(
     onLoadMore: () -> Unit
 ) {
     val isLoadingMore = remember { mutableStateOf(false) }
-
+    HeaderTitle(
+        title = "Featured Products",
+        seeMoreTitle = stringResource(R.string.see_more)
+    ) {}
+    Spacer(modifier = Modifier.height(4.dp))
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp),
@@ -195,30 +199,35 @@ fun ProductItem(product: ProductUIModel, showRating: Boolean = false, onProductC
         )
         Spacer(modifier = Modifier.height(4.dp))
         // Old Price & Sale Percentage Row
-        Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(top = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Old Price with line-through
-            Text(
-                text = product.getFormattedPrice(),
-                style = MessageTextStyle,
-                fontSize = 10.sp,
-                textDecoration = TextDecoration.LineThrough
+        if(product.salePercentage != null){
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Old Price with line-through
+                Text(
+                    text = product.getFormattedPrice(),
+                    style = MessageTextStyle,
+                    fontSize = 10.sp,
+                    textDecoration = TextDecoration.LineThrough
 
-            )
+                )
 
-            // Sale Percentage
-            Text(
-                text = "${product.getFormattedSale()} off",
-                color = ColorsManager.PrimaryRed,
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 8.dp)
-            )
+                // Sale Percentage
+                Text(
+                    text = "${product.getFormattedSale()} off",
+                    color = ColorsManager.PrimaryRed,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+
+
+            }
         }
+
     }
 }
 

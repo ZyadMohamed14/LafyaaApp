@@ -105,7 +105,7 @@ fun HomeScreen(
     val megaSaleState by viewModel.megaSaleState.collectAsState()
     val allProductsState by viewModel.getAllProductsState.collectAsState()
     LaunchedEffect(Unit) {
-        viewModel.getAllProducts(10,null)
+        viewModel.getAllProducts(30,null)
     }
 
     Scaffold(
@@ -245,10 +245,11 @@ fun HomeScreen(
 
                     if (productsResponse != null) {
                         val products = productsResponse.data
+                        val newProducts = products.filter { it.salePercentage == null }
                         viewModel.lastVisibleId = products.last().id // Correctly aligned with the surrounding block
 
                         AllProductsSection(
-                            products = products.map { it.toProductUIModel() },
+                            products = newProducts.map { it.toProductUIModel() },
                             navController = navController
                         ) {
                             viewModel.getAllProducts(10, viewModel.lastVisibleId)
